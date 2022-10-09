@@ -11,26 +11,30 @@
 
 '''
 #%%
+import yaml
+with open('config.yaml') as fh:
+    config = yaml.load(fh, Loader=yaml.FullLoader)
+
 import math
 import torch
 from torch import nn
 import torch.nn.functional as F
-from torch.nn.modules.batchnorm import _BatchNorm
+# from torch.nn.modules.batchnorm import _BatchNorm
 
 '''
 Get Bread
 '''
-class ConvBNRelu(nn.Moudel):
+class ConvBNRelu(nn.Module):
 
     @classmethod
-    def _same_paddings(kernel):
+    def _same_paddings(cls, kernel):
         if kernel == 1:
             return 0
         elif kernel == 3:
             return 1
 
     def __init__(self, inChannels, outChannels, kernel=3, stride=1, padding='same',
-                 dilation=1, groups=1, momentum=0.9):
+                 dilation=1, groups=1):
         super().__init__()
 
         if padding == 'same':
@@ -39,13 +43,19 @@ class ConvBNRelu(nn.Moudel):
         self.conv = nn.Conv2d(inChannels, outChannels, kernel_size=kernel,
                               padding=padding, stride=stride, dilation=dilation,
                               groups=groups, bias=False)
-        self.bn = nn.SyncBatchNorm(outChannels, eps=1e-5, momentum=momentum)
+        self.layer_norm = nn.LayerNorm(outChannels, eps=1e-5)
         self.act = nn.ReLU(inplace=True)
     
     def forward(self, x):
+        
+        B, C, H, W = x.shape
         x = self.conv(x)
-        x = self.bn(x)
+        # reshaping only to apply Layer Normalization layer
+        x = x.flatten(2).transpose(1,2) # B*C*H*W -> B*C*HW -> B*HW*C
+        x = self.layer_norm(x)
+        x = x.reshape(B, H, W, -1).permute(0, 3, 1, 2).contiguous() # B*HW*C -> B*H*W*C -> B*C*H*W
         x = self.act(x)
+
         return x
 '''
 Get Patty
@@ -79,18 +89,19 @@ class _MatrixDecomposition2DBase(nn.Module):
         self.eta = config['Eta']
 
         self.rand_init = config['RAND_INIT']
+        print(30*'=')
+        print('spatial: ', self.spatial)
+        print('S: ', self.S)
+        print('D: ', self.D)
+        print('R: ', self.R)
+        print('train_steps: ', self.train_steps)
+        print('eval_steps: ', self.eval_steps)
+        print('inv_t: ', self.inv_t)
+        print('eta: ', self.eta)
+        print('rand_init: ', self.rand_init)
+        print(30*'=')
 
-        print('spatial', self.spatial)
-        print('S', self.S)
-        print('D', self.D)
-        print('R', self.R)
-        print('train_steps', self.train_steps)
-        print('eval_steps', self.eval_steps)
-        print('inv_t', self.inv_t)
-        print('eta', self.eta)
-        print('rand_init', self.rand_init)
-
-    def _bild_bases(self, B,S,D,R, cuda=False):
+    def _bild_bases(self, B,S,D,R):
         raise NotImplementedError
 
     def local_setp(self, x, bases, coef):
@@ -108,7 +119,7 @@ class _MatrixDecomposition2DBase(nn.Module):
         coef = F.softmax(self.inv_t*coef, dim=-1)
 
         steps = self.train_steps if self.training else self.eval_steps
-        for _ in steps:
+        for _ in range(steps):
             bases, coef = self.local_setp(x, bases, coef)
         return bases, coef
     
@@ -135,11 +146,11 @@ class _MatrixDecomposition2DBase(nn.Module):
             x = x.view(B * self.S, N, D).transpose(1, 2)
         
         if not self.rand_init and not hasattr(self, 'bases'):
-            bases = self._build_bases(1, self.S, D, self.R, cuda=True)
+            bases = self._build_bases(1, self.S, D, self.R)
             self.register_buffer('bases', bases)
         # (S, D, R) -> (B * S, D, R)
         if self.rand_init:
-            bases = self._build_bases(B, self.S, D, self.R, cuda=True)
+            bases = self._build_bases(B, self.S, D, self.R)
         else:
             bases = self.bases.repeat(B,1,1)
 
@@ -165,17 +176,15 @@ class _MatrixDecomposition2DBase(nn.Module):
 
 class NMF2D(_MatrixDecomposition2DBase):
     def __init__(self, config):
-        super().__init__()
+        super().__init__(config)
 
         self.inv_t = 1
 
-    def _build_bases(self, B, S, D, R, cuda=False):
-        if cuda:
-            bases = torch.rand((B*S, D, R)).cuda()
-        else:
-            bases = torch.rand((B*S, D, R))
+    def _build_bases(self, B, S, D, R):
         
+        bases = torch.rand((B*S, D, R)).to('cuda' if torch.cuda.is_available() else 'cpu')
         bases = F.normalize(bases, dim=1) # column wise normalization i.e HW dim
+
         return bases
     
     @torch.no_grad()
@@ -209,7 +218,9 @@ class NMF2D(_MatrixDecomposition2DBase):
         coef = coef * (numerator / (denominator + 1e-7))
         return coef
 
-
+'''
+Make Burger
+'''
 class HamBurger(nn.Module):
     def __init__(self, inChannels, config):
         super().__init__()
@@ -221,10 +232,7 @@ class HamBurger(nn.Module):
                                          nn.ReLU(inplace=True)
                                         )
         self.ham = NMF2D(config)
-
-        if self.put_cheese:
-            self.cheese = ConvBNRelu(C, C)
-        
+        self.cheese = ConvBNRelu(C, C)
         self.upper_bread = nn.Conv2d(C, inChannels, 1, bias=False)
 
         self.init_weights()
@@ -235,10 +243,10 @@ class HamBurger(nn.Module):
                 fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
                 fan_out //= m.groups
                 nn.init.normal_(m.weight, std=math.sqrt(2.0/fan_out), mean=0)
-            if isinstance(m, nn.SyncBatchNorm):
+            if isinstance(m, nn.LayerNorm):
                 nn.init.constant_(m.weight, val=1.0)
                 if m.bias is not None:
-                    nn.init.constant_(m.bias, value=0.0)
+                    nn.init.constant_(m.bias, val=0.0)
 
     def forward(self, x):
         skip = x.clone()
@@ -257,4 +265,13 @@ class HamBurger(nn.Module):
     def online_update(self, bases):
         if hasattr(self.ham, 'online_update'):
             self.ham.online_update(bases)
+#%%
+# from torchsummary import summary
+# model = HamBurger(inChannels=512, config=config)
+# summary(model, (512,256,256))
 
+# model = model.to('cuda' if torch.cuda.is_available() else 'cpu')
+
+# y = torch.randn((6,512,32,32)).to('cuda' if torch.cuda.is_available() else 'cpu')
+# x = model.forward(y)
+# print(x.shape)

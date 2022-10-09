@@ -48,4 +48,4 @@ EVAL_STEPS: 6
 
 INV_T: 1
 BETA: 0.1
-ETA: 0.9
+Eta: 0.9
