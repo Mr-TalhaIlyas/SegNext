@@ -1,0 +1,51 @@
+# Configuration file for trinag model and hyperparameter settings
+# of crop and weed dataset
+
+#'0,1,2,3'
+gpus_to_use: '3'
+DPI: 300
+LOG_WANDB: False
+
+project_name: 'torchSegmentation'
+experiment_name: 'test_cityscape'
+
+log_directory: "/home/user01/data/talha/cityscape/logs/"
+checkpoint_path: "/home/user01/data/talha/cityscape/chkpts/"
+
+
+# Data loader parameters
+
+data_dir: "/home/user01/data/talha/cityscape/data/"
+# add sub dirs inside of train/val and test
+sub_directories: ['images/images/', 'masks/masks/']
+Normalize_data: False
+Shuffle_data: True
+# only for training data
+Augment_data: False
+pin_memory: False
+num_workers: 0
+num_classes: 34
+img_height: 512
+img_width: 1024
+input_channels: 3
+label_smoothing: 0.0
+batch_size: 2
+
+# Hamburger Parameters
+ham_channels: 512
+put_cheese: True
+
+DUAL: False
+SPATIAL: TRUE
+RAND_INIT: True
+
+MD_S: 1
+MD_D: 512
+MD_R: 64
+
+TRAIN_STEPS: 6
+EVAL_STEPS: 6
+
+INV_T: 1
+BETA: 0.1
+ETA: 0.9
