@@ -1,4 +1,5 @@
 #%%
+from pickletools import optimize
 import yaml
 with open('config.yaml') as fh:
     config = yaml.load(fh, Loader=yaml.FullLoader)
@@ -26,6 +27,12 @@ g2c = lambda x : gray2color(x, use_pallet='cityscape')
 
 from dataloader import GEN_DATA_LISTS, Cityscape
 from data_utils import collate
+from model import UHDNext, ModelUtils
+from losses import FocalLoss
+from metrics import ConfusionMatrix
+from lr_scheduler import LR_Scheduler
+
+import torch.nn.functional as F
 
 data_lists = GEN_DATA_LISTS(config['data_dir'], config['sub_directories'])
 train_paths, val_paths, test_paths = data_lists.get_splits()
@@ -51,3 +58,23 @@ plt.title('Sample Batch')
 plt.imshow(imgviz.tile(img_ls, shape=(2,config['batch_size']), border=(255,0,0)))
 plt.axis('off')
 #%%
+model = UHDNext(num_classes=34, in_channnels=3, embed_dims=[32, 64, 460, 256],
+                ffn_ratios=[4, 4, 4, 4], depths=[3, 3, 5, 2], dropout=0.,
+                num_stages=4, dec_outChannels=256, config=config)
+                
+model = model.to('cuda' if torch.cuda.is_available() else 'cpu')
+
+loss = FocalLoss(gamma=2)
+criterion = lambda x,y: loss(x, y)
+
+optimizer = torch.optim.Adam([{'params': model.module.parameters(),
+                         'lr':config['learning_rate']}], weight_decay=config['WEIGHT_DECAY'])
+
+scheduler = LR_Scheduler(config['lr_schedule'], config['learning_rate'], config['Epoch'],
+                         iters_per_epoch=len(train_loader), warmup_epochs=config['warmup_epochs'])
+
+metric = ConfusionMatrix(config['num_classes'])
+
+
+mu = ModelUtils(config['num_classes'], config['checkpoint_path'], config['experiment_name'])
+model.load_chkpt(model, optimizer)

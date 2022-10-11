@@ -7,7 +7,7 @@ DPI: 300
 LOG_WANDB: False
 
 project_name: 'torchSegmentation'
-experiment_name: 'test_cityscape'
+experiment_name: 'test_cityscape_syn_bn'
 
 log_directory: "/home/user01/data/talha/cityscape/logs/"
 checkpoint_path: "/home/user01/data/talha/cityscape/chkpts/"
@@ -29,9 +29,12 @@ img_height: 512
 img_width: 1024
 input_channels: 3
 label_smoothing: 0.0
-batch_size: 2
+batch_size: 3
 
-BN_MOM: 3e-4
+# one of 'batch_norm' or 'sync_bn' or 'layer_norm'
+norm_typ: 'sync_bn'
+BN_MOM: 0.9
+SyncBN_MOM: 3e-4
 # Hamburger Parameters
 ham_channels: 512
 put_cheese: True

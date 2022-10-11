@@ -20,9 +20,8 @@ import torch
 from functools import partial
 from torch import nn
 import torch.nn.functional as F
-from sync_bn.nn.modules import SynchronizedBatchNorm2d
+from norm_layers import NormLayer
 
-norm_layer = partial(SynchronizedBatchNorm2d, momentum=float(config['BN_MOM']))
 '''
 Get Bread
 '''
@@ -45,13 +44,13 @@ class ConvBNRelu(nn.Module):
         self.conv = nn.Conv2d(inChannels, outChannels, kernel_size=kernel,
                               padding=padding, stride=stride, dilation=dilation,
                               groups=groups, bias=False)
-        self.bn = norm_layer(outChannels)
+        self.norm = NormLayer(outChannels, norm_type=config['norm_typ'])
         self.act = nn.ReLU(inplace=True)
     
     def forward(self, x):
         
         x = self.conv(x)
-        x = self.bn(x)
+        x = self.norm(x)
         x = self.act(x)
 
         return x
@@ -233,14 +232,14 @@ class HamBurger(nn.Module):
         self.cheese = ConvBNRelu(C, C)
         self.upper_bread = nn.Conv2d(C, inChannels, 1, bias=False)
 
-        self.init_weights()
+    #     self.init_weights()
 
-    def init_weights(self):
-        for m in self.modules():
-            if isinstance(m, nn.Conv2d):
-                fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-                fan_out //= m.groups
-                nn.init.normal_(m.weight, std=math.sqrt(2.0/fan_out), mean=0)
+    # def init_weights(self):
+    #     for m in self.modules():
+    #         if isinstance(m, nn.Conv2d):
+    #             fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+    #             fan_out //= m.groups
+    #             nn.init.normal_(m.weight, std=math.sqrt(2.0/fan_out), mean=0)
 
     def forward(self, x):
         skip = x.clone()

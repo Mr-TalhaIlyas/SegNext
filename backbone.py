@@ -1,9 +1,13 @@
 #%%
+import yaml
+with open('config.yaml') as fh:
+    config = yaml.load(fh, Loader=yaml.FullLoader)
 import torch
 import torch.nn as nn
 import math
 import warnings
 from torch.nn.modules.utils import _pair as to_2tuple
+from norm_layers import NormLayer
 
 class DWConv3x3(nn.Module):
     '''Depth wise conv'''
@@ -23,11 +27,11 @@ class StemConv(nn.Module):
         self.proj = nn.Sequential(
                                     nn.Conv2d(in_channels, out_channels//2,
                                                 kernel_size=(3,3), stride=(2,2), padding=(1,1)),
-                                    nn.BatchNorm2d(out_channels//2, eps=1e-5, momentum=bn_momentum),
+                                    NormLayer(out_channels//2, norm_type=config['norm_typ']),
                                     nn.GELU(),
                                     nn.Conv2d(out_channels//2, out_channels,
                                                 kernel_size=(3,3), stride=(2,2), padding=(1,1)),
-                                    nn.BatchNorm2d(out_channels, eps=1e-5, momentum=bn_momentum)
+                                    NormLayer(out_channels, norm_type=config['norm_typ'])
                                 )
     
     def forward(self, x):
@@ -75,13 +79,13 @@ class FFN(nn.Module):
 class BlockFFN(nn.Module):
     def __init__(self, in_channels, out_channels, hid_channels, dropout=0.):
         super().__init__()
-        self.bn = nn.BatchNorm2d(in_channels, eps=1e-5, momentum=0.99)
+        self.norm = NormLayer(in_channels, norm_type=config['norm_typ'])
         self.ffn = FFN(in_channels, out_channels, hid_channels, dropout)
 
     def forward(self, x):
         skip = x.clone()
 
-        x = self.bn(x)
+        x = self.norm(x)
         x = self.ffn(x)
 
         op = skip + x
@@ -131,7 +135,7 @@ class MSCA(nn.Module):
 class BlockMSCA(nn.Module):
     def __init__(self, dim):
         super().__init__()
-        self.bn = nn.BatchNorm2d(dim, eps=1e-5, momentum=0.99)
+        self.norm = NormLayer(dim, norm_type=config['norm_typ'])
         self.proj1 = nn.Conv2d(dim, dim, 1)
         self.act = nn.GELU()
         self.msca = MSCA(dim)
@@ -141,7 +145,7 @@ class BlockMSCA(nn.Module):
 
         skip = x.clone()
 
-        x = self.bn(x)
+        x = self.norm(x)
         x = self.proj1(x)
         x = self.act(x)
         x = self.msca(x)
@@ -189,27 +193,27 @@ class MSCANet(nn.Module):
             stage = nn.ModuleList([StageMSCA(dim=embed_dims[i], ffn_ratio=ffn_ratios[i], dropout=0.,)
                                 for j in range(depths[i])])
 
-            layer_norm = nn.LayerNorm(embed_dims[i])
+            norm_layer = NormLayer(embed_dims[i], norm_type=config['norm_typ'])
             cur += depths[i]
 
             setattr(self, f'input_embed{i+1}', input_embed)
             setattr(self, f'stage{i+1}', stage)
-            setattr(self, f'layer_norm{i+1}', layer_norm)
+            setattr(self, f'norm_layer{i+1}', norm_layer)
 
-        self.init_weights()
+    #     self.init_weights()
 
         
-    def init_weights(self):
-        for m in self.modules():
-            if isinstance(m, nn.Linear):
-                nn.init.normal_(m.weight, mean=0.0, std=0.02)
-            if isinstance(m, nn.LayerNorm):
-                nn.init.constant_(m.weight, val=1.0)
-            if isinstance(m, nn.Conv2d):
-                fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-                fan_out //= m.groups
-                nn.init.normal_(m.weight, std=math.sqrt(2.0/fan_out), mean=0)
-                # xavier_uniform_() tf default
+    # def init_weights(self):
+    #     for m in self.modules():
+    #         if isinstance(m, nn.Linear):
+    #             nn.init.normal_(m.weight, mean=0.0, std=0.02)
+    #         if isinstance(m, nn.LayerNorm):
+    #             nn.init.constant_(m.weight, val=1.0)
+    #         if isinstance(m, nn.Conv2d):
+    #             fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+    #             fan_out //= m.groups
+    #             nn.init.normal_(m.weight, std=math.sqrt(2.0/fan_out), mean=0)
+    #             # xavier_uniform_() tf default
 
     def forward(self, x):
         B = x.shape[0]
@@ -218,18 +222,14 @@ class MSCANet(nn.Module):
         for i in range(self.num_stages):
             input_embed = getattr(self, f'input_embed{i+1}')
             stage = getattr(self, f'stage{i+1}')
-            layer_norm = getattr(self, f'layer_norm{i+1}')
+            norm_layer = getattr(self, f'norm_layer{i+1}')
             
             x, H, W = input_embed(x)
             
             for stg in stage:
                 x = stg(x)
             
-            # reshaping only to apply Layer Normalization layer
-            x = x.flatten(2).transpose(1,2) # B*C*H*W -> B*C*HW -> B*HW*C
-            x = layer_norm(x)
-            x = x.reshape(B, H, W, -1).permute(0, 3, 1, 2).contiguous() # B*HW*C -> B*H*W*C -> B*C*H*W
-
+            x = norm_layer(x)
             outs.append(x)
 
         return outs

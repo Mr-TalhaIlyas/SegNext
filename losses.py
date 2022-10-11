@@ -6,10 +6,10 @@ import torch.nn.functional as F
 import torch
 
 def one_hot(index, classes):
-    #####################################################
+    
     size = index.size()[:1] + (classes,) # jsut gets shape -> (P, C)
     view = index.size()[:1] + (1,) # get shapes -> (P, 1)
-    #####################################################
+    
     # makes a tensor of size (P, C) and fills it with zeros
     mask = torch.Tensor(size).fill_(0).to('cuda' if torch.cuda.is_available() else 'cpu') # (P, C)
     # reshapes the targets/index to (P, 1)
@@ -45,7 +45,7 @@ class FocalLoss(nn.Module):
         if self.one_hot:
             target = one_hot(target, C) # (P, C)
 
-        probs = F.softmax(input, dim=1)
+        # probs = F.softmax(input, dim=1)
         probs = (probs * target).sum(1)
         probs = probs.clamp(self.eps, 1. - self.eps)
 
