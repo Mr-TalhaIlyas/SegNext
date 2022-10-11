@@ -15,22 +15,25 @@ if config['LOG_WANDB']:
     wandb.config = config
 
 import torch
+import torch.nn as nn
 from torch.utils.data import DataLoader
 
 import imgviz, cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+from tqdm import tqdm
 mpl.rcParams['figure.dpi'] = config['DPI']
 from gray2color import gray2color
 g2c = lambda x : gray2color(x, use_pallet='cityscape')
 
 from dataloader import GEN_DATA_LISTS, Cityscape
 from data_utils import collate
-from model import UHDNext, ModelUtils
+from model import UHDNext
 from losses import FocalLoss
 from metrics import ConfusionMatrix
 from lr_scheduler import LR_Scheduler
+from utils import Trainer, Evaluator, ModelUtils
 
 import torch.nn.functional as F
 
@@ -45,36 +48,113 @@ train_data = Cityscape(train_paths[0], train_paths[1], config['img_height'], con
 train_loader = DataLoader(train_data, batch_size=config['batch_size'], shuffle=True,
                           num_workers=config['num_workers'],
                           collate_fn=collate, pin_memory=config['pin_memory'],
-                          prefetch_factor=2, persistent_workers=False)
+                          prefetch_factor=2, persistent_workers=True)
 
-batch = next(iter(train_loader))
+val_data = Cityscape(val_paths[0], val_paths[1], config['img_height'], config['img_width'],
+                     False, config['Normalize_data'])
 
+val_loader = DataLoader(val_data, batch_size=config['batch_size'], shuffle=False,
+                        num_workers=config['num_workers'],
+                        collate_fn=collate, pin_memory=config['pin_memory'],
+                        prefetch_factor=2, persistent_workers=True)
 
-s=1#255
-img_ls = []
-[img_ls.append((batch['img'][i]*s).astype(np.uint8)) for i in range(config['batch_size'])]
-[img_ls.append(g2c(batch['lbl'][i])) for i in range(config['batch_size'])]
-plt.title('Sample Batch')
-plt.imshow(imgviz.tile(img_ls, shape=(2,config['batch_size']), border=(255,0,0)))
-plt.axis('off')
+# DataLoader Sanity Checks
+# batch = next(iter(train_loader))
+# s=1#255
+# img_ls = []
+# [img_ls.append((batch['img'][i]*s).astype(np.uint8)) for i in range(config['batch_size'])]
+# [img_ls.append(g2c(batch['lbl'][i])) for i in range(config['batch_size'])]
+# plt.title('Sample Batch')
+# plt.imshow(imgviz.tile(img_ls, shape=(2,config['batch_size']), border=(255,0,0)))
+# plt.axis('off')
 #%%
 model = UHDNext(num_classes=34, in_channnels=3, embed_dims=[32, 64, 460, 256],
                 ffn_ratios=[4, 4, 4, 4], depths=[3, 3, 5, 2], dropout=0.,
                 num_stages=4, dec_outChannels=256, config=config)
                 
 model = model.to('cuda' if torch.cuda.is_available() else 'cpu')
+model= nn.DataParallel(model)
 
 loss = FocalLoss(gamma=2)
 criterion = lambda x,y: loss(x, y)
 
-optimizer = torch.optim.Adam([{'params': model.module.parameters(),
-                         'lr':config['learning_rate']}], weight_decay=config['WEIGHT_DECAY'])
+optimizer = torch.optim.AdamW([{'params': model.parameters(),
+                               'lr':config['learning_rate']}], weight_decay=0.01)
 
-scheduler = LR_Scheduler(config['lr_schedule'], config['learning_rate'], config['Epoch'],
+# optimizer = torch.optim.Adam([{'params': model.parameters(),
+#                                'lr':config['learning_rate']}],
+#                                 weight_decay=config['WEIGHT_DECAY'])
+
+scheduler = LR_Scheduler(config['lr_schedule'], config['learning_rate'], config['epochs'],
                          iters_per_epoch=len(train_loader), warmup_epochs=config['warmup_epochs'])
 
 metric = ConfusionMatrix(config['num_classes'])
 
 
 mu = ModelUtils(config['num_classes'], config['checkpoint_path'], config['experiment_name'])
-model.load_chkpt(model, optimizer)
+mu.load_chkpt(model, optimizer)
+
+trainer = Trainer(model, config['batch_size'], optimizer, criterion, metric)
+evaluator = Evaluator(model, metric)
+
+# Initializing plots
+if config['LOG_WANDB']:
+    wandb.watch(model, criterion, log="all", log_freq=10)
+    wandb.log({"epoch": 0, "val_mIOU": 0, "loss": 0,
+                "mIOU": 0, "learning_rate": 0})
+
+#%%
+epoch, best_iou, curr_viou = 0, 0, 0
+ta, tl = [], []
+
+for epoch in range(config['epochs']):
+
+    pbar = tqdm(train_loader)
+    model.train()
+    
+    for step, data_batch in enumerate(pbar):
+
+        scheduler(optimizer, step, epoch)
+        loss_value = trainer.training_step(data_batch)
+        iou = trainer.get_scores()
+        trainer.reset_metric()
+
+        pbar.set_description(f'Epoch {epoch+1}/{config["epochs"]} - t_loss {loss_value:.4f} - mIOU {iou["iou_mean"]:.4f}')
+    
+    if (epoch + 1) % 2 == 0: # eval every 2 epoch
+        model.eval()
+        va = []
+        vbar = tqdm(val_loader)
+        for step, val_batch in enumerate(vbar):
+            with torch.no_grad():
+                evaluator.eval_step(val_batch)
+                viou = evaluator.get_scores()
+                evaluator.reset_metric()
+
+            vbar.set_description(f'Validation - v_mIOU {viou["iou_mean"]:.4f}')
+
+        img, gt, pred = evaluator.get_sample_prediction()
+        tiled = imgviz.tile([img, g2c(gt), g2c(pred)], shape=(1,3), border=(255,0,0))
+        # plt.imshow(tiled)
+        va.append(viou['iou_mean'])
+        curr_viou = np.max(np.nan_to_num(va))
+        print(f'=> mean Validation IoU: {curr_viou:.4f}')
+
+        if config['LOG_WANDB']:
+            wandb.log({"epoch": epoch, "val_mIOU": viou["iou_mean"]})
+            wandb.log({'predictions': wandb.Image(tiled)})
+
+    if config['LOG_WANDB']:
+        wandb.log({"epoch": epoch, "loss": loss_value, "mIOU": iou["iou_mean"],
+                    "learning_rate": optimizer.param_groups[0]['lr']})
+    
+    tl.append(loss_value)
+    ta.append(iou["iou_mean"])
+    
+    if curr_viou > best_iou:
+        best_iou = curr_viou
+        mu.save_chkpt(model, optimizer, epoch, loss, iou['iou_mean'])
+
+if config['LOG_WANDB']:
+    wandb.run.finish()
+#%%

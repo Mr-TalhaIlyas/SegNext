@@ -1,0 +1,99 @@
+Directories loadded:
+/home/user01/data/talha/cityscape/data/train/images/images/
+/home/user01/data/talha/cityscape/data/val/images/images/
+/home/user01/data/talha/cityscape/data/test/images/images/
+/home/user01/data/talha/cityscape/data/train/masks/masks/
+/home/user01/data/talha/cityscape/data/val/masks/masks/
+/home/user01/data/talha/cityscape/data/test/masks/masks/
+| Split   |   Images |   Labels |
+|---------|----------|----------|
+| train   |     2975 |     2975 |
+| val     |      500 |      500 |
+| test    |     1525 |        0 |
+{"Cityscape": "type", "ConfusionMatrix": "type", "DataLoader": "type", "Evaluator": "type", "F": "module", "FocalLoss": "type", "GEN_DATA_LISTS": "type", "LR_Scheduler": "type", "ModelUtils": "type", "Trainer": "type", "UHDNext": "type", "classes": "list", "collate": "function", "config": "dict", "cv2": "module", "data_lists": "GEN_DATA_LISTS", "fh": "TextIOWrapper", "g2c": "function", "get_ipython": "function", "gray2color": "function", "imgviz": "module", "mpl": "module", "np": "module", "optimize": "function", "os": "module", "plt": "module", "sys": "module", "test_paths": "list", "torch": "module", "tqdm": "type", "train_data": "Cityscape", "train_loader": "DataLoader", "train_paths": "list", "val_data": "Cityscape", "val_loader": "DataLoader", "val_paths": "list", "wandb": "module", "yaml": "module"}
+==============================
+spatial:  True
+S:  1
+D:  512
+R:  64
+train_steps:  6
+eval_steps:  6
+inv_t:  1
+eta:  0.9
+rand_init:  True
+==============================
+==============================
+spatial:  True
+S:  1
+D:  512
+R:  64
+train_steps:  6
+eval_steps:  6
+inv_t:  1
+eta:  0.9
+rand_init:  True
+==============================
+Using cos LR Scheduler!
+-> Loading checkpoint
+[INFO] No checkpoint found
+  0%|          | 0/5 [00:00<?, ?it/s]
+{"shape": "", "count": 41, "type": "dict"}
+
+Epoch 1/50 - t_loss 2.4761 - mIOU 0.0147: 100%|██████████| 5/5 [00:07<00:00,  1.45s/it]
+
+
+Epoch 2/50 - t_loss 1.7857 - mIOU 0.0136: 100%|██████████| 5/5 [00:04<00:00,  1.07it/s]
+Validation - v_mIOU 0.0056: 100%|██████████| 5/5 [00:02<00:00,  1.92it/s]
+  0%|          | 0/5 [00:00<?, ?it/s]
+=> mean Validation IoU: 0.0056
+
+
+Epoch 3/50 - t_loss 1.8258 - mIOU 0.0311: 100%|██████████| 5/5 [00:04<00:00,  1.11it/s]
+
+Epoch 4/50 - t_loss 1.9071 - mIOU 0.0292: 100%|██████████| 5/5 [00:04<00:00,  1.11it/s]
+Validation - v_mIOU 0.0164: 100%|██████████| 5/5 [00:02<00:00,  2.30it/s]
+  0%|          | 0/5 [00:00<?, ?it/s]
+=> mean Validation IoU: 0.0164
+
+Epoch 5/50 - t_loss 1.5673 - mIOU 0.0287: 100%|██████████| 5/5 [00:04<00:00,  1.16it/s]
+  0%|          | 0/5 [00:00<?, ?it/s]
+{"shape": "", "count": 41, "type": "dict"}
+{"Cityscape": "type", "ConfusionMatrix": "type", "DataLoader": "type", "Evaluator": "type", "F": "module", "FocalLoss": "type", "GEN_DATA_LISTS": "type", "LR_Scheduler": "type", "ModelUtils": "type", "Trainer": "type", "UHDNext": "type", "best_iou": "float64", "classes": "list", "collate": "function", "config": "dict", "criterion": "function", "curr_viou": "float64", "cv2": "module", "data_batch": "dict", "data_lists": "GEN_DATA_LISTS", "epoch": "int", "evaluator": "Evaluator", "fh": "TextIOWrapper", "g2c": "function", "get_ipython": "function", "gray2color": "function", "gt": "ndarray", "img": "ndarray", "imgviz": "module", "iou": "dict", "loss": "FocalLoss", "loss_value": "float", "metric": "ConfusionMatrix", "model": "UHDNext", "mpl": "module", "mu": "ModelUtils", "np": "module", "optimize": "function", "optimizer": "AdamW", "os": "module", "pbar": "tqdm", "plt": "module", "pred": "ndarray", "scheduler": "LR_Scheduler", "step": "int", "sys": "module", "ta": "list", "test_paths": "list", "tiled": "ndarray", "tl": "list", "torch": "module", "tqdm": "type", "train_data": "Cityscape", "train_loader": "DataLoader", "train_paths": "list", "trainer": "Trainer", "va": "list", "val_batch": "dict", "val_data": "Cityscape", "val_loader": "DataLoader", "val_paths": "list", "vbar": "tqdm", "viou": "dict", "wandb": "module", "yaml": "module"}
+{"shape": "", "count": 41, "type": "dict"}
+{"shape": "", "count": 2, "type": "dict"}
+{"shape": "(256, 512)", "count": 256, "type": "ndarray"}
+{"shape": "(256, 512, 3)", "count": 256, "type": "ndarray"}
+{"shape": "", "count": 2, "type": "dict"}
+{"shape": "(256, 512)", "count": 256, "type": "ndarray"}
+{"shape": "(256, 1542, 3)", "count": 256, "type": "ndarray"}
+{"shape": "", "count": 2, "type": "dict"}
+{"shape": "", "count": 2, "type": "dict"}
+{"Cityscape": "type", "ConfusionMatrix": "type", "DataLoader": "type", "Evaluator": "type", "F": "module", "FocalLoss": "type", "GEN_DATA_LISTS": "type", "LR_Scheduler": "type", "ModelUtils": "type", "Trainer": "type", "UHDNext": "type", "best_iou": "float64", "classes": "list", "collate": "function", "config": "dict", "criterion": "function", "curr_viou": "float64", "cv2": "module", "data_batch": "dict", "data_lists": "GEN_DATA_LISTS", "epoch": "int", "evaluator": "Evaluator", "fh": "TextIOWrapper", "g2c": "function", "get_ipython": "function", "gray2color": "function", "gt": "ndarray", "img": "ndarray", "imgviz": "module", "iou": "dict", "loss": "FocalLoss", "loss_value": "float", "metric": "ConfusionMatrix", "model": "UHDNext", "mpl": "module", "mu": "ModelUtils", "np": "module", "optimize": "function", "optimizer": "AdamW", "os": "module", "pbar": "tqdm", "plt": "module", "pred": "ndarray", "scheduler": "LR_Scheduler", "step": "int", "sys": "module", "ta": "list", "test_paths": "list", "tiled": "ndarray", "tl": "list", "torch": "module", "tqdm": "type", "train_data": "Cityscape", "train_loader": "DataLoader", "train_paths": "list", "trainer": "Trainer", "va": "list", "val_batch": "dict", "val_data": "Cityscape", "val_loader": "DataLoader", "val_paths": "list", "vbar": "tqdm", "viou": "dict", "wandb": "module", "yaml": "module"}
+{"shape": "", "count": 41, "type": "dict"}
+{"shape": "", "count": 2, "type": "dict"}
+{"shape": "(256, 512)", "count": 256, "type": "ndarray"}
+{"shape": "(256, 512, 3)", "count": 256, "type": "ndarray"}
+{"shape": "", "count": 2, "type": "dict"}
+{"shape": "(256, 512)", "count": 256, "type": "ndarray"}
+{"shape": "(256, 1542, 3)", "count": 256, "type": "ndarray"}
+{"shape": "", "count": 2, "type": "dict"}
+{"shape": "", "count": 2, "type": "dict"}
+{"Cityscape": "type", "ConfusionMatrix": "type", "DataLoader": "type", "Evaluator": "type", "F": "module", "FocalLoss": "type", "GEN_DATA_LISTS": "type", "LR_Scheduler": "type", "ModelUtils": "type", "Trainer": "type", "UHDNext": "type", "best_iou": "float64", "classes": "list", "collate": "function", "config": "dict", "criterion": "function", "curr_viou": "float64", "cv2": "module", "data_batch": "dict", "data_lists": "GEN_DATA_LISTS", "epoch": "int", "evaluator": "Evaluator", "fh": "TextIOWrapper", "g2c": "function", "get_ipython": "function", "gray2color": "function", "gt": "ndarray", "img": "ndarray", "imgviz": "module", "iou": "dict", "loss": "FocalLoss", "loss_value": "float", "metric": "ConfusionMatrix", "model": "UHDNext", "mpl": "module", "mu": "ModelUtils", "np": "module", "optimize": "function", "optimizer": "AdamW", "os": "module", "pbar": "tqdm", "plt": "module", "pred": "ndarray", "scheduler": "LR_Scheduler", "step": "int", "sys": "module", "ta": "list", "test_paths": "list", "tiled": "ndarray", "tl": "list", "torch": "module", "tqdm": "type", "train_data": "Cityscape", "train_loader": "DataLoader", "train_paths": "list", "trainer": "Trainer", "va": "list", "val_batch": "dict", "val_data": "Cityscape", "val_loader": "DataLoader", "val_paths": "list", "vbar": "tqdm", "viou": "dict", "wandb": "module", "yaml": "module"}
+{"shape": "", "count": 41, "type": "dict"}
+{"shape": "", "count": 2, "type": "dict"}
+{"shape": "(256, 512)", "count": 256, "type": "ndarray"}
+{"shape": "(256, 512, 3)", "count": 256, "type": "ndarray"}
+{"shape": "", "count": 2, "type": "dict"}
+{"shape": "(256, 512)", "count": 256, "type": "ndarray"}
+{"shape": "(256, 1542, 3)", "count": 256, "type": "ndarray"}
+{"shape": "", "count": 2, "type": "dict"}
+{"shape": "", "count": 2, "type": "dict"}
+{"Cityscape": "type", "ConfusionMatrix": "type", "DataLoader": "type", "Evaluator": "type", "F": "module", "FocalLoss": "type", "GEN_DATA_LISTS": "type", "LR_Scheduler": "type", "ModelUtils": "type", "Trainer": "type", "UHDNext": "type", "best_iou": "float64", "classes": "list", "collate": "function", "config": "dict", "criterion": "function", "curr_viou": "float64", "cv2": "module", "data_batch": "dict", "data_lists": "GEN_DATA_LISTS", "epoch": "int", "evaluator": "Evaluator", "fh": "TextIOWrapper", "g2c": "function", "get_ipython": "function", "gray2color": "function", "gt": "ndarray", "img": "ndarray", "imgviz": "module", "iou": "dict", "loss": "FocalLoss", "loss_value": "float", "metric": "ConfusionMatrix", "model": "UHDNext", "mpl": "module", "mu": "ModelUtils", "np": "module", "optimize": "function", "optimizer": "AdamW", "os": "module", "pbar": "tqdm", "plt": "module", "pred": "ndarray", "scheduler": "LR_Scheduler", "step": "int", "sys": "module", "ta": "list", "test_paths": "list", "tiled": "ndarray", "tl": "list", "torch": "module", "tqdm": "type", "train_data": "Cityscape", "train_loader": "DataLoader", "train_paths": "list", "trainer": "Trainer", "va": "list", "val_batch": "dict", "val_data": "Cityscape", "val_loader": "DataLoader", "val_paths": "list", "vbar": "tqdm", "viou": "dict", "wandb": "module", "yaml": "module"}
+{"shape": "", "count": 41, "type": "dict"}
+{"shape": "", "count": 2, "type": "dict"}
+{"shape": "(256, 512)", "count": 256, "type": "ndarray"}
+{"shape": "(256, 512, 3)", "count": 256, "type": "ndarray"}
+{"shape": "", "count": 2, "type": "dict"}
+{"shape": "(256, 512)", "count": 256, "type": "ndarray"}
+{"shape": "(256, 1542, 3)", "count": 256, "type": "ndarray"}
+{"shape": "", "count": 2, "type": "dict"}

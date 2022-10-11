@@ -1,0 +1,67 @@
+2022-10-11 16:49:30,815 INFO    StreamThr :1360012 [internal.py:wandb_internal():88] W&B internal server running at pid: 1360012, started at: 2022-10-11 16:49:30.814152
+2022-10-11 16:49:30,818 DEBUG   HandlerThread:1360012 [handler.py:handle_request():138] handle_request: status
+2022-10-11 16:49:30,822 DEBUG   SenderThread:1360012 [sender.py:send_request():315] send_request: status
+2022-10-11 16:49:30,824 DEBUG   SenderThread:1360012 [sender.py:send():301] send: header
+2022-10-11 16:49:30,824 INFO    WriterThread:1360012 [datastore.py:open_for_write():75] open: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_164930-25ur7uwn/run-25ur7uwn.wandb
+2022-10-11 16:49:30,841 DEBUG   SenderThread:1360012 [sender.py:send():301] send: run
+2022-10-11 16:49:31,341 DEBUG   HandlerThread:1360012 [handler.py:handle_request():138] handle_request: check_version
+2022-10-11 16:49:31,344 INFO    SenderThread:1360012 [dir_watcher.py:__init__():216] watching files in: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_164930-25ur7uwn/files
+2022-10-11 16:49:31,345 INFO    SenderThread:1360012 [sender.py:_start_run_threads():912] run started: 25ur7uwn with start time 1665474570.804762
+2022-10-11 16:49:31,345 DEBUG   SenderThread:1360012 [sender.py:send():301] send: summary
+2022-10-11 16:49:31,345 INFO    SenderThread:1360012 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2022-10-11 16:49:31,346 DEBUG   SenderThread:1360012 [sender.py:send_request():315] send_request: check_version
+2022-10-11 16:49:31,427 DEBUG   HandlerThread:1360012 [handler.py:handle_request():138] handle_request: run_start
+2022-10-11 16:49:31,435 DEBUG   HandlerThread:1360012 [meta.py:__init__():34] meta init
+2022-10-11 16:49:31,435 DEBUG   HandlerThread:1360012 [meta.py:__init__():49] meta init done
+2022-10-11 16:49:31,436 DEBUG   HandlerThread:1360012 [meta.py:probe():215] probe
+2022-10-11 16:49:31,443 DEBUG   HandlerThread:1360012 [meta.py:_setup_git():205] setup git
+2022-10-11 16:49:31,475 DEBUG   HandlerThread:1360012 [meta.py:_setup_git():212] setup git done
+2022-10-11 16:49:31,476 DEBUG   HandlerThread:1360012 [meta.py:_save_pip():53] save pip
+2022-10-11 16:49:31,477 DEBUG   HandlerThread:1360012 [meta.py:_save_pip():67] save pip done
+2022-10-11 16:49:31,477 DEBUG   HandlerThread:1360012 [meta.py:_save_conda():74] save conda
+2022-10-11 16:49:32,349 INFO    Thread-13 :1360012 [dir_watcher.py:_on_file_created():275] file/dir created: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_164930-25ur7uwn/files/wandb-summary.json
+2022-10-11 16:49:32,350 INFO    Thread-13 :1360012 [dir_watcher.py:_on_file_created():275] file/dir created: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_164930-25ur7uwn/files/requirements.txt
+2022-10-11 16:49:32,350 INFO    Thread-13 :1360012 [dir_watcher.py:_on_file_created():275] file/dir created: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_164930-25ur7uwn/files/conda-environment.yaml
+2022-10-11 16:49:33,907 DEBUG   HandlerThread:1360012 [meta.py:_save_conda():84] save conda done
+2022-10-11 16:49:33,907 DEBUG   HandlerThread:1360012 [meta.py:probe():253] probe done
+2022-10-11 16:49:33,932 DEBUG   SenderThread:1360012 [sender.py:send():301] send: files
+2022-10-11 16:49:33,933 INFO    SenderThread:1360012 [sender.py:_save_file():1155] saving file wandb-metadata.json with policy now
+2022-10-11 16:49:33,957 DEBUG   HandlerThread:1360012 [handler.py:handle_request():138] handle_request: stop_status
+2022-10-11 16:49:33,958 DEBUG   SenderThread:1360012 [sender.py:send_request():315] send_request: stop_status
+2022-10-11 16:49:34,185 DEBUG   SenderThread:1360012 [sender.py:send():301] send: telemetry
+2022-10-11 16:49:34,351 INFO    Thread-13 :1360012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_164930-25ur7uwn/files/conda-environment.yaml
+2022-10-11 16:49:34,351 INFO    Thread-13 :1360012 [dir_watcher.py:_on_file_created():275] file/dir created: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_164930-25ur7uwn/files/wandb-metadata.json
+2022-10-11 16:49:34,461 DEBUG   SenderThread:1360012 [sender.py:send():301] send: telemetry
+2022-10-11 16:49:34,751 INFO    Thread-17 :1360012 [upload_job.py:push():139] Uploaded file /tmp/tmpg569xtlzwandb/38jayv17-wandb-metadata.json
+2022-10-11 16:49:35,332 DEBUG   SenderThread:1360012 [sender.py:send():301] send: telemetry
+2022-10-11 16:49:35,425 DEBUG   HandlerThread:1360012 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:49:35,426 INFO    HandlerThread:1360012 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:49:35,512 DEBUG   SenderThread:1360012 [sender.py:send():301] send: stats
+2022-10-11 16:49:35,552 DEBUG   HandlerThread:1360012 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:49:35,553 INFO    HandlerThread:1360012 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:49:35,557 DEBUG   HandlerThread:1360012 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:49:35,558 INFO    HandlerThread:1360012 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:49:35,673 DEBUG   HandlerThread:1360012 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:49:35,673 INFO    HandlerThread:1360012 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:49:35,674 DEBUG   SenderThread:1360012 [sender.py:send():301] send: stats
+2022-10-11 16:49:36,352 INFO    Thread-13 :1360012 [dir_watcher.py:_on_file_created():275] file/dir created: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_164930-25ur7uwn/files/output.log
+2022-10-11 16:49:37,040 DEBUG   HandlerThread:1360012 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:49:37,041 INFO    HandlerThread:1360012 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:49:37,179 DEBUG   HandlerThread:1360012 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:49:37,179 INFO    HandlerThread:1360012 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:49:37,180 DEBUG   HandlerThread:1360012 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:49:37,180 INFO    HandlerThread:1360012 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:49:37,286 DEBUG   HandlerThread:1360012 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:49:37,286 DEBUG   SenderThread:1360012 [sender.py:send():301] send: stats
+2022-10-11 16:49:37,286 INFO    HandlerThread:1360012 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:49:37,288 DEBUG   HandlerThread:1360012 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:49:37,288 INFO    HandlerThread:1360012 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:49:37,454 DEBUG   SenderThread:1360012 [sender.py:send():301] send: stats
+2022-10-11 16:49:37,454 DEBUG   HandlerThread:1360012 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:49:37,455 INFO    HandlerThread:1360012 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:49:37,455 DEBUG   HandlerThread:1360012 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:49:37,456 INFO    HandlerThread:1360012 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:49:37,574 DEBUG   SenderThread:1360012 [sender.py:send():301] send: stats
+2022-10-11 16:49:37,575 DEBUG   SenderThread:1360012 [sender.py:send():301] send: stats
+2022-10-11 16:49:38,353 INFO    Thread-13 :1360012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_164930-25ur7uwn/files/output.log
+2022-10-11 16:49:40,354 INFO    Thread-13 :1360012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_164930-25ur7uwn/files/output.log

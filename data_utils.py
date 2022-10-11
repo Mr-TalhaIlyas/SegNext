@@ -1,6 +1,7 @@
+import yaml
+with open('config.yaml') as fh:
+    config = yaml.load(fh, Loader=yaml.FullLoader)
 import torch
-# import torch.nn as nn
-# import torch.nn.Functional as F
 from torch.autograd import Variable
 from torchvision import transforms
 from PIL import Image, ImageOps
@@ -14,6 +15,10 @@ transformer = transforms.Compose([
                                  transforms.ToTensor(),
                                 ])
 
+torch_resizer = transforms.Compose([transforms.Resize(size=(config['img_height']//4, config['img_width']//4),
+                                                interpolation=transforms.InterpolationMode.NEAREST)])
+torch_imgresizer = transforms.Compose([transforms.Resize(size=(config['img_height']//4, config['img_width']//4),
+                                                interpolation=transforms.InterpolationMode.BILINEAR)])
 def collate(batch):
     '''
     custom Collat funciton for collating individual fetched data samples into batches.

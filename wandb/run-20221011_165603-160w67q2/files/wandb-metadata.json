@@ -1,0 +1,24 @@
+{
+    "os": "Linux-5.15.0-48-generic-x86_64-with-glibc2.31",
+    "python": "3.9.12",
+    "heartbeatAt": "2022-10-11T07:56:04.066637",
+    "startedAt": "2022-10-11T07:56:03.441698",
+    "docker": null,
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "gpu_count": 4,
+    "cpu_count": 36,
+    "cuda": null,
+    "args": null,
+    "state": "running",
+    "program": "/home/user01/data/talha/cityscape/scripts/hamburger.py",
+    "codePath": "hamburger.py",
+    "git": {
+        "remote": "https://github.com/Mr-TalhaIlyas/scripts.git",
+        "commit": "967c9992a097d23cc2c2f6a62a079ea156301942"
+    },
+    "email": "mr.talhailyas@gmail.com",
+    "root": "/home/user01/data/talha/cityscape/scripts",
+    "host": "30904server",
+    "username": "user01",
+    "executable": "/home/user01/anaconda3/envs/pyt/bin/python"
+}

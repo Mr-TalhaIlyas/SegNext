@@ -1,0 +1,232 @@
+2022-10-11 16:51:32,031 INFO    StreamThr :1361517 [internal.py:wandb_internal():88] W&B internal server running at pid: 1361517, started at: 2022-10-11 16:51:32.030352
+2022-10-11 16:51:32,034 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: status
+2022-10-11 16:51:32,037 DEBUG   SenderThread:1361517 [sender.py:send_request():315] send_request: status
+2022-10-11 16:51:32,043 DEBUG   SenderThread:1361517 [sender.py:send():301] send: header
+2022-10-11 16:51:32,044 INFO    WriterThread:1361517 [datastore.py:open_for_write():75] open: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_165131-9gnry0cr/run-9gnry0cr.wandb
+2022-10-11 16:51:32,063 DEBUG   SenderThread:1361517 [sender.py:send():301] send: run
+2022-10-11 16:51:32,606 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: check_version
+2022-10-11 16:51:32,610 INFO    SenderThread:1361517 [dir_watcher.py:__init__():216] watching files in: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_165131-9gnry0cr/files
+2022-10-11 16:51:32,610 INFO    SenderThread:1361517 [sender.py:_start_run_threads():912] run started: 9gnry0cr with start time 1665474692.021047
+2022-10-11 16:51:32,610 DEBUG   SenderThread:1361517 [sender.py:send():301] send: summary
+2022-10-11 16:51:32,611 INFO    SenderThread:1361517 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2022-10-11 16:51:32,611 DEBUG   SenderThread:1361517 [sender.py:send_request():315] send_request: check_version
+2022-10-11 16:51:32,692 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: run_start
+2022-10-11 16:51:32,699 DEBUG   HandlerThread:1361517 [meta.py:__init__():34] meta init
+2022-10-11 16:51:32,699 DEBUG   HandlerThread:1361517 [meta.py:__init__():49] meta init done
+2022-10-11 16:51:32,699 DEBUG   HandlerThread:1361517 [meta.py:probe():215] probe
+2022-10-11 16:51:32,707 DEBUG   HandlerThread:1361517 [meta.py:_setup_git():205] setup git
+2022-10-11 16:51:32,740 DEBUG   HandlerThread:1361517 [meta.py:_setup_git():212] setup git done
+2022-10-11 16:51:32,740 DEBUG   HandlerThread:1361517 [meta.py:_save_pip():53] save pip
+2022-10-11 16:51:32,741 DEBUG   HandlerThread:1361517 [meta.py:_save_pip():67] save pip done
+2022-10-11 16:51:32,742 DEBUG   HandlerThread:1361517 [meta.py:_save_conda():74] save conda
+2022-10-11 16:51:33,615 INFO    Thread-13 :1361517 [dir_watcher.py:_on_file_created():275] file/dir created: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_165131-9gnry0cr/files/conda-environment.yaml
+2022-10-11 16:51:33,615 INFO    Thread-13 :1361517 [dir_watcher.py:_on_file_created():275] file/dir created: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_165131-9gnry0cr/files/requirements.txt
+2022-10-11 16:51:33,616 INFO    Thread-13 :1361517 [dir_watcher.py:_on_file_created():275] file/dir created: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_165131-9gnry0cr/files/wandb-summary.json
+2022-10-11 16:51:35,096 DEBUG   HandlerThread:1361517 [meta.py:_save_conda():84] save conda done
+2022-10-11 16:51:35,096 DEBUG   HandlerThread:1361517 [meta.py:probe():253] probe done
+2022-10-11 16:51:35,144 DEBUG   SenderThread:1361517 [sender.py:send():301] send: files
+2022-10-11 16:51:35,145 INFO    SenderThread:1361517 [sender.py:_save_file():1155] saving file wandb-metadata.json with policy now
+2022-10-11 16:51:35,172 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: stop_status
+2022-10-11 16:51:35,173 DEBUG   SenderThread:1361517 [sender.py:send_request():315] send_request: stop_status
+2022-10-11 16:51:35,402 DEBUG   SenderThread:1361517 [sender.py:send():301] send: telemetry
+2022-10-11 16:51:35,616 INFO    Thread-13 :1361517 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_165131-9gnry0cr/files/conda-environment.yaml
+2022-10-11 16:51:35,617 INFO    Thread-13 :1361517 [dir_watcher.py:_on_file_created():275] file/dir created: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_165131-9gnry0cr/files/wandb-metadata.json
+2022-10-11 16:51:35,669 DEBUG   SenderThread:1361517 [sender.py:send():301] send: telemetry
+2022-10-11 16:51:35,950 INFO    Thread-17 :1361517 [upload_job.py:push():139] Uploaded file /tmp/tmphzwfeexqwandb/1dxaak9g-wandb-metadata.json
+2022-10-11 16:51:36,539 DEBUG   SenderThread:1361517 [sender.py:send():301] send: telemetry
+2022-10-11 16:51:36,617 INFO    Thread-13 :1361517 [dir_watcher.py:_on_file_created():275] file/dir created: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_165131-9gnry0cr/files/output.log
+2022-10-11 16:51:36,688 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:51:36,688 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:51:36,803 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:51:36,865 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:51:36,865 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:51:36,871 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:51:36,871 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:51:36,965 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:51:36,965 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:51:36,966 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:51:38,304 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:51:38,304 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:51:38,396 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:51:38,428 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:51:38,428 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:51:38,434 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:51:38,434 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:51:38,540 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:51:38,541 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:51:38,541 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:51:38,542 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:51:38,618 INFO    Thread-13 :1361517 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_165131-9gnry0cr/files/output.log
+2022-10-11 16:51:38,701 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:51:38,701 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:51:38,702 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:51:38,703 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:51:38,704 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:51:38,829 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:51:38,831 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:51:40,619 INFO    Thread-13 :1361517 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_165131-9gnry0cr/files/output.log
+2022-10-11 16:51:50,453 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: stop_status
+2022-10-11 16:51:50,453 DEBUG   SenderThread:1361517 [sender.py:send_request():315] send_request: stop_status
+2022-10-11 16:52:03,632 INFO    Thread-13 :1361517 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_165131-9gnry0cr/files/config.yaml
+2022-10-11 16:52:04,449 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:04,449 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:04,489 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:04,489 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:04,577 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:04,846 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:04,846 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:04,851 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:04,851 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:04,983 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:04,983 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:04,985 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:04,985 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:05,086 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:05,086 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:05,087 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:05,087 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:05,251 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:05,251 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:05,252 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:05,253 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:05,361 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:05,362 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:05,363 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:05,363 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:05,463 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:05,463 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:05,463 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:05,464 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:05,466 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:05,583 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:05,583 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:05,583 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:05,585 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:05,586 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:05,725 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:05,725 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:05,726 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:05,727 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:05,855 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:05,855 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:05,856 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:05,857 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:05,971 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:05,971 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:05,972 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:05,972 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:06,091 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:06,091 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:06,092 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:06,092 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:06,196 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:06,196 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:06,197 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:06,197 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:06,301 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: stop_status
+2022-10-11 16:52:06,301 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:06,303 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:06,304 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:06,305 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:06,306 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:06,307 DEBUG   SenderThread:1361517 [sender.py:send_request():315] send_request: stop_status
+2022-10-11 16:52:06,534 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:06,535 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:06,536 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:06,537 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:06,538 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:06,646 INFO    Thread-13 :1361517 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_165131-9gnry0cr/files/output.log
+2022-10-11 16:52:09,648 INFO    Thread-13 :1361517 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_165131-9gnry0cr/files/output.log
+2022-10-11 16:52:21,541 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: stop_status
+2022-10-11 16:52:21,542 DEBUG   SenderThread:1361517 [sender.py:send_request():315] send_request: stop_status
+2022-10-11 16:52:23,382 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:23,382 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:23,387 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:23,387 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:23,503 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:23,503 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:23,504 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:23,504 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:23,627 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:23,628 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:23,629 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:23,629 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:23,771 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:23,771 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:23,772 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:23,772 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:23,888 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:23,889 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:23,889 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:23,893 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:23,893 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:24,049 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:24,049 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:24,050 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:24,051 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:24,052 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:24,172 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:24,173 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:24,174 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:24,174 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:24,298 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:24,299 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:24,299 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:24,299 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:24,422 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:24,422 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:24,423 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:24,424 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:24,547 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:24,548 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:24,548 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:24,549 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:24,550 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:24,551 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:24,695 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:24,695 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:24,697 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:24,697 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:24,822 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:52:24,822 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:24,822 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:52:24,824 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:52:24,825 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:52:24,941 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:24,941 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:24,942 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:24,943 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:24,944 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:24,945 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:24,946 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:52:25,656 INFO    Thread-13 :1361517 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_165131-9gnry0cr/files/output.log
+2022-10-11 16:52:27,657 INFO    Thread-13 :1361517 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_165131-9gnry0cr/files/output.log
+2022-10-11 16:52:36,770 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: stop_status
+2022-10-11 16:52:36,771 DEBUG   SenderThread:1361517 [sender.py:send_request():315] send_request: stop_status
+2022-10-11 16:52:52,002 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: stop_status
+2022-10-11 16:52:52,002 DEBUG   SenderThread:1361517 [sender.py:send_request():315] send_request: stop_status
+2022-10-11 16:53:01,920 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:53:01,920 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:53:01,962 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:53:01,962 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:53:02,039 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:53:02,039 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:53:02,041 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:53:02,041 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:53:02,158 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:53:02,159 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:53:02,218 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:53:02,218 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:53:02,223 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:53:02,223 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:53:02,342 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: resume
+2022-10-11 16:53:02,343 INFO    HandlerThread:1361517 [handler.py:handle_request_resume():687] starting system metrics thread
+2022-10-11 16:53:02,344 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: pause
+2022-10-11 16:53:02,345 INFO    HandlerThread:1361517 [handler.py:handle_request_pause():696] stopping system metrics thread
+2022-10-11 16:53:02,467 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:53:02,469 DEBUG   SenderThread:1361517 [sender.py:send():301] send: stats
+2022-10-11 16:53:03,675 INFO    Thread-13 :1361517 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_165131-9gnry0cr/files/output.log
+2022-10-11 16:53:04,676 INFO    Thread-13 :1361517 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_165131-9gnry0cr/files/output.log
+2022-10-11 16:53:05,676 INFO    Thread-13 :1361517 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/user01/data/talha/cityscape/scripts/wandb/run-20221011_165131-9gnry0cr/files/output.log
+2022-10-11 16:53:07,233 DEBUG   HandlerThread:1361517 [handler.py:handle_request():138] handle_request: stop_status
+2022-10-11 16:53:07,234 DEBUG   SenderThread:1361517 [sender.py:send_request():315] send_request: stop_status

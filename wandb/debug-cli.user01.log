@@ -1,0 +1,10 @@
+2022-10-11 16:53:02 ERROR dropped chunk 404 Client Error: Not Found for url: https://api.wandb.ai/files/robotvision/torchSegmentation/9gnry0cr/file_stream
+NoneType: None
+2022-10-11 16:53:14 ERROR dropped chunk 404 Client Error: Not Found for url: https://api.wandb.ai/files/robotvision/torchSegmentation/9gnry0cr/file_stream
+NoneType: None
+2022-10-11 17:05:13 ERROR dropped chunk 404 Client Error: Not Found for url: https://api.wandb.ai/files/robotvision/torchSegmentation/13ol7cft/file_stream
+NoneType: None
+2022-10-11 17:05:15 ERROR dropped chunk 404 Client Error: Not Found for url: https://api.wandb.ai/files/robotvision/torchSegmentation/13ol7cft/file_stream
+NoneType: None
+2022-10-11 17:05:17 ERROR dropped chunk 404 Client Error: Not Found for url: https://api.wandb.ai/files/robotvision/torchSegmentation/13ol7cft/file_stream
+NoneType: None

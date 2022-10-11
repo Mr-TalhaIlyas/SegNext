@@ -25,7 +25,7 @@ class ConfusionMatrix(object):
         
         intersect = np.diag(hist)
         union = hist.sum(axis=1) + hist.sum(axis=0) - np.diag(hist)
-        iou = intersect / union
+        iou = intersect / (union + 1e-7)
         mean_iou = np.mean(np.nan_to_num(iou[1:]))
 
         return {

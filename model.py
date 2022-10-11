@@ -1,5 +1,5 @@
 #%%
-import yaml, math
+import yaml, math, os
 with open('config.yaml') as fh:
     config = yaml.load(fh, Loader=yaml.FullLoader)
 import torch
@@ -56,32 +56,10 @@ class UHDNext(nn.Module):
 # x = torch.randn((1,3,1024,2048)).to('cuda')
 # y = model.forward(x)
 
-class ModelUtils():
-    def __init__(self, num_classes, chkpt_pth, exp_name):
-        self.num_classes = num_classes
-        self.chkpt_pth = chkpt_pth
-        self.exp_name = exp_name
-    
-    def save_chkpt(self, model, optimizer, epoch=0, loss=0, iou=0):
-        print('-> Saving checkpoint')
-        torch.save({
-                    'epoch': epoch,
-                    'loss': loss,
-                    'iou': iou,
-                    'model_state_dict': model.state_dict(),
-                    'optimizer_state_dict': optimizer.state_dict()
-                    }, self.chkpt_pth)
+# for name, param in model.named_parameters():
+#     if param.requires_grad:
+#         print name, param.data
 
-    def load_chkpt(self, model, optimizer):
-        try:
-            print('-> Loading checkpoint')
-            chkpt = torch.load(self.chkpt_pth)
-            epoch = chkpt['epoch']
-            loss = chkpt['loss']
-            iou = chkpt['iou']
-            model.load_chkpt(chkpt['model_state_dict'])
-            optimizer.load_state_dict(chkpt['optimizer_state_dict'])
-        except FileNotFoundError:
-            print('-> No checkpoint found')
-            epoch, loss, iou = 0, 0, 0
-        return epoch, loss, iou, model, optimizer
+
+
+
