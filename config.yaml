@@ -31,6 +31,7 @@ input_channels: 3
 label_smoothing: 0.0
 batch_size: 2
 
+BN_MOM: 3e-4
 # Hamburger Parameters
 ham_channels: 512
 put_cheese: True

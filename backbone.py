@@ -1,8 +1,4 @@
 #%%
-from turtle import forward
-from black import out
-from cv2 import detail_SphericalProjector
-from numpy import require
 import torch
 import torch.nn as nn
 import math
@@ -253,3 +249,9 @@ class MSCANet(nn.Module):
 # for i in range(4):
 #     print(x[i].shape)
 # %%
+# output shoudl be something like
+
+# torch.Size([6, 32, 256, 512])
+# torch.Size([6, 64, 128, 256])
+# torch.Size([6, 460, 64, 128])
+# torch.Size([6, 256, 32, 64])

@@ -17,10 +17,12 @@ with open('config.yaml') as fh:
 
 import math
 import torch
+from functools import partial
 from torch import nn
 import torch.nn.functional as F
-# from torch.nn.modules.batchnorm import _BatchNorm
+from sync_bn.nn.modules import SynchronizedBatchNorm2d
 
+norm_layer = partial(SynchronizedBatchNorm2d, momentum=float(config['BN_MOM']))
 '''
 Get Bread
 '''
@@ -43,17 +45,13 @@ class ConvBNRelu(nn.Module):
         self.conv = nn.Conv2d(inChannels, outChannels, kernel_size=kernel,
                               padding=padding, stride=stride, dilation=dilation,
                               groups=groups, bias=False)
-        self.layer_norm = nn.LayerNorm(outChannels, eps=1e-5)
+        self.bn = norm_layer(outChannels)
         self.act = nn.ReLU(inplace=True)
     
     def forward(self, x):
         
-        B, C, H, W = x.shape
         x = self.conv(x)
-        # reshaping only to apply Layer Normalization layer
-        x = x.flatten(2).transpose(1,2) # B*C*H*W -> B*C*HW -> B*HW*C
-        x = self.layer_norm(x)
-        x = x.reshape(B, H, W, -1).permute(0, 3, 1, 2).contiguous() # B*HW*C -> B*H*W*C -> B*C*H*W
+        x = self.bn(x)
         x = self.act(x)
 
         return x
@@ -243,10 +241,6 @@ class HamBurger(nn.Module):
                 fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
                 fan_out //= m.groups
                 nn.init.normal_(m.weight, std=math.sqrt(2.0/fan_out), mean=0)
-            if isinstance(m, nn.LayerNorm):
-                nn.init.constant_(m.weight, val=1.0)
-                if m.bias is not None:
-                    nn.init.constant_(m.bias, val=0.0)
 
     def forward(self, x):
         skip = x.clone()
@@ -275,3 +269,4 @@ class HamBurger(nn.Module):
 # y = torch.randn((6,512,32,32)).to('cuda' if torch.cuda.is_available() else 'cpu')
 # x = model.forward(y)
 # print(x.shape)
+
