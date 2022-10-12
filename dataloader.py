@@ -12,7 +12,7 @@ import numpy as np
 import os, random, time
 
 from augmenters import data_augmenter
-from data_utils import std_norm
+from data_utils import std_norm, encode_labels
 
 class GEN_DATA_LISTS():
     
@@ -94,10 +94,11 @@ class Cityscape(data.Dataset):
         
         img = cv2.imread(self.img_paths[index])
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        img = cv2.resize(img, (self.img_width, self.img_height), cv2.INTER_LINEAR)
+        # img = cv2.resize(img, (self.img_width, self.img_height), cv2.INTER_LINEAR)
 
         lbl = cv2.imread(self.mask_paths[index], 0)
-        lbl = cv2.resize(lbl, (self.img_width, self.img_height), cv2.INTER_NEAREST)
+        # lbl = cv2.resize(lbl, (self.img_width, self.img_height), cv2.INTER_NEAREST)
+        lbl = encode_labels(lbl)
 
         if self.augment_data:
             img,  lbl = data_augmenter(img, lbl)

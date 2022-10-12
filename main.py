@@ -11,7 +11,8 @@ os.environ["CUDA_VISIBLE_DEVICES"] = config['gpus_to_use'];
 
 if config['LOG_WANDB']:
     import wandb
-    wandb.init(project=config['project_name'], name=config['experiment_name'])
+    wandb.init(dir=config['log_directory'],
+               project=config['project_name'], name=config['experiment_name'])
     wandb.config = config
 
 import torch
@@ -23,19 +24,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 from tqdm import tqdm
-mpl.rcParams['figure.dpi'] = config['DPI']
-from gray2color import gray2color
-g2c = lambda x : gray2color(x, use_pallet='cityscape')
+mpl.rcParams['figure.dpi'] = 300
+
 
 from dataloader import GEN_DATA_LISTS, Cityscape
-from data_utils import collate
+from data_utils import collate, pallet_cityscape
 from model import UHDNext
-from losses import FocalLoss
+from losses import FocalLoss, CrossEntropyLoss2d
 from metrics import ConfusionMatrix
 from lr_scheduler import LR_Scheduler
 from utils import Trainer, Evaluator, ModelUtils
-
 import torch.nn.functional as F
+
+from gray2color import gray2color
+g2c = lambda x : gray2color(x, use_pallet='cityscape', custom_pallet=pallet_cityscape)
 
 data_lists = GEN_DATA_LISTS(config['data_dir'], config['sub_directories'])
 train_paths, val_paths, test_paths = data_lists.get_splits()
@@ -59,27 +61,29 @@ val_loader = DataLoader(val_data, batch_size=config['batch_size'], shuffle=False
                         prefetch_factor=2, persistent_workers=True)
 
 # DataLoader Sanity Checks
-# batch = next(iter(train_loader))
-# s=1#255
-# img_ls = []
-# [img_ls.append((batch['img'][i]*s).astype(np.uint8)) for i in range(config['batch_size'])]
-# [img_ls.append(g2c(batch['lbl'][i])) for i in range(config['batch_size'])]
-# plt.title('Sample Batch')
-# plt.imshow(imgviz.tile(img_ls, shape=(2,config['batch_size']), border=(255,0,0)))
-# plt.axis('off')
+batch = next(iter(train_loader))
+s=255
+img_ls = []
+[img_ls.append((batch['img'][i]*s).astype(np.uint8)) for i in range(config['batch_size'])]
+[img_ls.append(g2c(batch['lbl'][i])) for i in range(config['batch_size'])]
+plt.title('Sample Batch')
+plt.imshow(imgviz.tile(img_ls, shape=(2,config['batch_size']), border=(255,0,0)))
+plt.axis('off')
 #%%
-model = UHDNext(num_classes=34, in_channnels=3, embed_dims=[32, 64, 460, 256],
-                ffn_ratios=[4, 4, 4, 4], depths=[3, 3, 5, 2], dropout=0.,
-                num_stages=4, dec_outChannels=256, config=config)
+model = UHDNext(num_classes=config['num_classes'], in_channnels=3, embed_dims=[32, 64, 460, 256],
+                ffn_ratios=[4, 4, 4, 4], depths=[3, 3, 5, 2], num_stages=4,
+                dec_outChannels=256, ls_init_val=float(config['layer_scaling_val']), 
+                drop_path=config['stochastic_drop_path'], config=config)
                 
 model = model.to('cuda' if torch.cuda.is_available() else 'cpu')
 model= nn.DataParallel(model)
 
-loss = FocalLoss(gamma=2)
+loss = FocalLoss()
+# loss = CrossEntropyLoss2d()
 criterion = lambda x,y: loss(x, y)
 
 optimizer = torch.optim.AdamW([{'params': model.parameters(),
-                               'lr':config['learning_rate']}], weight_decay=0.01)
+                               'lr':config['learning_rate']}], weight_decay=0.0005)
 
 # optimizer = torch.optim.Adam([{'params': model.parameters(),
 #                                'lr':config['learning_rate']}],
@@ -100,7 +104,7 @@ evaluator = Evaluator(model, metric)
 # Initializing plots
 if config['LOG_WANDB']:
     wandb.watch(model, criterion, log="all", log_freq=10)
-    wandb.log({"epoch": 0, "val_mIOU": 0, "loss": 0,
+    wandb.log({"epoch": 0, "val_mIOU": 0, "loss": 10,
                 "mIOU": 0, "learning_rate": 0})
 
 #%%
@@ -141,11 +145,11 @@ for epoch in range(config['epochs']):
         print(f'=> mean Validation IoU: {curr_viou:.4f}')
 
         if config['LOG_WANDB']:
-            wandb.log({"epoch": epoch, "val_mIOU": viou["iou_mean"]})
+            wandb.log({"epoch": epoch+1, "val_mIOU": viou["iou_mean"]})
             wandb.log({'predictions': wandb.Image(tiled)})
 
     if config['LOG_WANDB']:
-        wandb.log({"epoch": epoch, "loss": loss_value, "mIOU": iou["iou_mean"],
+        wandb.log({"epoch": epoch+1, "loss": loss_value, "mIOU": iou["iou_mean"],
                     "learning_rate": optimizer.param_groups[0]['lr']})
     
     tl.append(loss_value)

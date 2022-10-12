@@ -7,17 +7,7 @@ import torch.nn as nn
 import math
 import warnings
 from torch.nn.modules.utils import _pair as to_2tuple
-from norm_layers import NormLayer
-
-class DWConv3x3(nn.Module):
-    '''Depth wise conv'''
-    def __init__(self, dim=768):
-        super(DWConv3x3, self).__init__()
-        self.dwconv = nn.Conv2d(dim, dim, 3, 1, 1, bias=True, groups=dim)
-
-    def forward(self, x):
-        x = self.dwconv(x)
-        return x
+from bricks import DownSample, LayerScale, StochasticDepth, DWConv3x3, NormLayer
 
 class StemConv(nn.Module):
     '''following ConvNext paper'''
@@ -40,58 +30,43 @@ class StemConv(nn.Module):
         # x = x.flatten(2).transpose(1,2) # B*C*H*W -> B*C*HW -> B*HW*C
         return x, H, W
 
-class DownSample(nn.Module):
-    def __init__(self, kernelSize=3, stride=2, in_channels=3, embed_dim=768):
-        super().__init__()
-        self.proj = nn.Conv2d(in_channels, embed_dim, kernel_size=(kernelSize, kernelSize),
-                              stride=stride, padding=(kernelSize//2, kernelSize//2))
-        # stride 4 => 4x down sample
-        # stride 2 => 2x down sample
-    def forward(self, x):
-
-        x = self.proj(x)
-        B, C, H, W = x.size()
-        # x = x.flatten(2).transpose(1,2)
-        return x, H, W
-
 
 class FFN(nn.Module):
     '''following ConvNext paper'''
-    def __init__(self, in_channels, out_channels, hid_channels, dropout=0.):
+    def __init__(self, in_channels, out_channels, hid_channels):
         super().__init__()
         self.fc1 = nn.Conv2d(in_channels, hid_channels, 1)
         self.dwconv = DWConv3x3(hid_channels)
         self.act = nn.GELU()
         self.fc2 = nn.Conv2d(hid_channels, out_channels, 1)
-        self.drop = nn.Dropout(dropout)
 
     def forward(self, x):
 
         x = self.fc1(x)
         x = self.dwconv(x)
         x = self.act(x)
-        x = self.drop(x)
         x = self.fc2(x)
-        x = self.drop(x)
 
         return x
 
 class BlockFFN(nn.Module):
-    def __init__(self, in_channels, out_channels, hid_channels, dropout=0.):
+    def __init__(self, in_channels, out_channels, hid_channels, ls_init_val=1e-2, drop_path=0.):
         super().__init__()
         self.norm = NormLayer(in_channels, norm_type=config['norm_typ'])
-        self.ffn = FFN(in_channels, out_channels, hid_channels, dropout)
-
+        self.ffn = FFN(in_channels, out_channels, hid_channels)
+        self.layer_scale = LayerScale(in_channels, init_value=ls_init_val)
+        self.drop_path = StochasticDepth(p=drop_path)
+    
     def forward(self, x):
         skip = x.clone()
 
         x = self.norm(x)
         x = self.ffn(x)
+        x = self.layer_scale(x)
+        x = self.drop_path(x)
 
         op = skip + x
         return op
-
-
 
 
 class MSCA(nn.Module):
@@ -133,14 +108,16 @@ class MSCA(nn.Module):
         return op
 
 class BlockMSCA(nn.Module):
-    def __init__(self, dim):
+    def __init__(self, dim, ls_init_val=1e-2, drop_path=0.0):
         super().__init__()
         self.norm = NormLayer(dim, norm_type=config['norm_typ'])
         self.proj1 = nn.Conv2d(dim, dim, 1)
         self.act = nn.GELU()
         self.msca = MSCA(dim)
         self.proj2 = nn.Conv2d(dim, dim, 1)
-
+        self.layer_scale = LayerScale(dim, init_value=ls_init_val)
+        self.drop_path = StochasticDepth(p=drop_path)
+        # print(f'BlockMSCA {drop_path}')
     def forward(self, x):
 
         skip = x.clone()
@@ -150,6 +127,8 @@ class BlockMSCA(nn.Module):
         x = self.act(x)
         x = self.msca(x)
         x = self.proj2(x)
+        x = self.layer_scale(x)
+        x = self.drop_path(x)
 
         out = x + skip
 
@@ -157,13 +136,15 @@ class BlockMSCA(nn.Module):
 
 
 class StageMSCA(nn.Module):
-    def __init__(self, dim, ffn_ratio=4., dropout=0., bn_momentum=0.99):
+    def __init__(self, dim, ffn_ratio=4., ls_init_val=1e-2, drop_path=0.0):
         super().__init__()
-        self.msca_block = BlockMSCA(dim)
+        # print(f'StageMSCA {drop_path}')
+        self.msca_block = BlockMSCA(dim, ls_init_val, drop_path)
 
         ffn_hid_dim = int(dim * ffn_ratio)
         self.ffn_block = BlockFFN(in_channels=dim, out_channels=dim,
-                                    hid_channels=ffn_hid_dim, dropout=dropout)
+                                  hid_channels=ffn_hid_dim, ls_init_val=ls_init_val,
+                                  drop_path=drop_path)
 
     def forward(self, x): # input coming form Stem
         # B, N, C = x.shape
@@ -175,13 +156,14 @@ class StageMSCA(nn.Module):
 
 class MSCANet(nn.Module):
     def __init__(self, in_channnels=3, embed_dims=[32, 64, 460,256],
-                 ffn_ratios=[4, 4, 4, 4], depths=[3,3,5,2], dropout=0.,
-                 num_stages = 4):
+                 ffn_ratios=[4, 4, 4, 4], depths=[3,3,5,2], num_stages=4,
+                 ls_init_val=1e-2, drop_path=0.0):
         super(MSCANet, self).__init__()
-
+        # print(f'MSCANet {drop_path}')
         self.depths = depths
         self.num_stages = num_stages
-
+        # stochastic depth decay rule (similar to linear decay) / just like matplot linspace
+        dpr = [x.item() for x in torch.linspace(0, drop_path, sum(depths))]
         cur = 0
 
         for i in range(num_stages):
@@ -190,8 +172,9 @@ class MSCANet(nn.Module):
             else:
                 input_embed = DownSample(in_channels=embed_dims[i-1], embed_dim=embed_dims[i])
             
-            stage = nn.ModuleList([StageMSCA(dim=embed_dims[i], ffn_ratio=ffn_ratios[i], dropout=0.,)
-                                for j in range(depths[i])])
+            stage = nn.ModuleList([StageMSCA(dim=embed_dims[i], ffn_ratio=ffn_ratios[i],
+                                   ls_init_val=ls_init_val, drop_path=dpr[cur + j])
+                                   for j in range(depths[i])])
 
             norm_layer = NormLayer(embed_dims[i], norm_type=config['norm_typ'])
             cur += depths[i]
@@ -199,21 +182,6 @@ class MSCANet(nn.Module):
             setattr(self, f'input_embed{i+1}', input_embed)
             setattr(self, f'stage{i+1}', stage)
             setattr(self, f'norm_layer{i+1}', norm_layer)
-
-    #     self.init_weights()
-
-        
-    # def init_weights(self):
-    #     for m in self.modules():
-    #         if isinstance(m, nn.Linear):
-    #             nn.init.normal_(m.weight, mean=0.0, std=0.02)
-    #         if isinstance(m, nn.LayerNorm):
-    #             nn.init.constant_(m.weight, val=1.0)
-    #         if isinstance(m, nn.Conv2d):
-    #             fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-    #             fan_out //= m.groups
-    #             nn.init.normal_(m.weight, std=math.sqrt(2.0/fan_out), mean=0)
-    #             # xavier_uniform_() tf default
 
     def forward(self, x):
         B = x.shape[0]
@@ -238,8 +206,8 @@ class MSCANet(nn.Module):
 #%%
 # from torchsummary import summary
 # model = MSCANet(in_channnels=3, embed_dims=[32, 64, 460,256],
-#                  ffn_ratios=[4, 4, 4, 4], depths=[3,3,5,2], dropout=0.,
-#                  num_stages = 4)
+#                  ffn_ratios=[4, 4, 4, 4], depths=[3,3,5,2],
+#                  num_stages = 4, ls_init_val=1e-2, drop_path=0.0)
 # # summary(model, (3,1024,2048))
 
 

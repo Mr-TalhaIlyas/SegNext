@@ -2,12 +2,12 @@
 # of crop and weed dataset
 
 #'0,1,2,3'
-gpus_to_use: '1,3'
+gpus_to_use: '0,1'
 DPI: 300
 LOG_WANDB: True
 
 project_name: 'torchSegmentation'
-experiment_name: 'test_cityscape_syn_bn'
+experiment_name: 'droppath_layerscale_aug_focal'
 
 log_directory: "/home/user01/data/talha/cityscape/logs/"
 checkpoint_path: "/home/user01/data/talha/cityscape/chkpts/"
@@ -18,19 +18,25 @@ checkpoint_path: "/home/user01/data/talha/cityscape/chkpts/"
 data_dir: "/home/user01/data/talha/cityscape/data/"
 # add sub dirs inside of train/val and test
 sub_directories: ['images/images/', 'masks/masks/']
-Normalize_data: False
+Normalize_data: True
 Shuffle_data: True
 # only for training data
-Augment_data: False
+Augment_data: True
 pin_memory: True
 num_workers: 6
-num_classes: 34
+num_classes: 20
 img_height: 1024
 img_width: 2048
+# 4 means output of network is 4 times downsampled
+output_stride: 4
 input_channels: 3
 label_smoothing: 0.0
 batch_size: 8
 WEIGHT_DECAY: 0.00005
+# Regularization
+stochastic_drop_path: 0.5
+layer_scaling_val: 1e-2
+
 # learning rate
 learning_rate: 0.001
 lr_schedule: 'cos'

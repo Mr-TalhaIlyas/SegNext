@@ -5,34 +5,8 @@ import torch
 import torch.nn.functional as F
 import torch.nn as nn
 
-from hamburger import HamBurger, ConvBNRelu
-
-class SeprableConv2d(nn.Module):
-    def __init__(self, inChannels, outChannels, kernal_size=3, bias=False):
-        self.dwconv = nn.Conv2d(inChannels, inChannels, kernal_size=kernal_size,
-                                groups=inChannels, bias=bias)
-        self.pwconv = nn.Conv2d(inChannels, inChannels, kernal_size=1, bias=bias)
-
-    def forward(self, x):
-
-        x = self.dwconv(x)
-        x = self.pwconv(x)
-        
-        return x
-
-class ConvRelu(nn.Module):
-    def __init__(self, inChannels, outChannels, kernel=1, bias=False):
-        super().__init__()
-        self.conv = nn.Conv2d(inChannels, outChannels, kernel_size=kernel, bias=False)
-        self.act = nn.ReLU(inplace=True)
-
-    def forward(self, x):
-
-        x = self.conv(x)
-        x = self.act(x)
-        
-        return x
-
+from hamburger import HamBurger
+from bricks import SeprableConv2d, ConvRelu, ConvBNRelu, resize
 
 class DecoderHead(nn.Module):
     def __init__(self, outChannels, config, enc_embed_dims=[32,64,460,256]):
@@ -76,11 +50,31 @@ class DecoderHead(nn.Module):
 
         return s234
 
+class HamDecoder(nn.Module):
+    '''SegNext'''
+    def __init__(self, outChannels, config, enc_embed_dims=[32,64,460,256]):
+        super().__init__()
+
+        ham_channels = config['ham_channels']
+
+        self.squeeze = ConvRelu(sum(enc_embed_dims[1:]), ham_channels)
+        self.ham_attn = HamBurger(ham_channels, config)
+        self.align = ConvRelu(ham_channels, outChannels)
+       
+    def forward(self, features):
+        
+        features = features[1:] # drop stage 1 features b/c low level
+        features = [resize(feature, size=features[-3].shape[2:], mode='bilinear') for feature in features]
+        x = torch.cat(features, dim=1)
+
+        x = self.squeeze(x)
+        x = self.ham_attn(x)
+        x = self.align(x)       
+
+        return x
 
 
-
-
-
+#%%
 
 # import torch.nn.functional as F
 

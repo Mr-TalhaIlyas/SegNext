@@ -84,37 +84,33 @@ Noise = iaa.Sequential(
                 ], random_order=True)
             ], random_order=True)
 
-def geomatric_augs(img_patch, medium_context, large_context, lbl_patch):
+def geomatric_augs(img_patch, lbl_patch):
     #print('Geomatric AUG')
     geom_aug = Geometric._to_deterministic() #This line is very important because without this one each pair of image and mask will get augumented differently
     
     img_patch = geom_aug.augment_image(img_patch)
     lbl_patch = geom_aug.augment_image(lbl_patch)
-    medium_context = geom_aug.augment_image(medium_context)
-    large_context = geom_aug.augment_image(large_context)
 
-    return img_patch, medium_context, large_context, lbl_patch
+    return img_patch, lbl_patch
 
-def noise_augs(img_patch, medium_context, large_context, lbl_patch):
+def noise_augs(img_patch, lbl_patch):
     #print('Noise AUG')
     nois_aug = Noise._to_deterministic()
     img_patch = nois_aug.augment_image(img_patch)
-    medium_context = nois_aug.augment_image(medium_context)
-    large_context = nois_aug.augment_image(large_context)
 
-    return img_patch, medium_context, large_context, lbl_patch
+    return img_patch, lbl_patch
 
 
-def data_augmenter(img_patch, medium_context, large_context, lbl_patch):
+def data_augmenter(img_patch, lbl_patch):
     
     func_args = [
-                (geomatric_augs, (img_patch, medium_context, large_context, lbl_patch)),
-                (noise_augs,     (img_patch, medium_context, large_context, lbl_patch)),
+                (geomatric_augs, (img_patch, lbl_patch)),
+                (noise_augs,     (img_patch, lbl_patch)),
                 ]
     #print('one iter done')
     (func, args), = random.choices(func_args, weights=[0.7, 0.3])
-    img_patch, medium_context, large_context, lbl_patch = func(*args)                
+    img_patch, lbl_patch = func(*args)                
 
-    return img_patch, medium_context, large_context, lbl_patch
+    return img_patch, lbl_patch
 
 

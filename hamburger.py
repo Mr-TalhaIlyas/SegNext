@@ -20,40 +20,13 @@ import torch
 from functools import partial
 from torch import nn
 import torch.nn.functional as F
-from norm_layers import NormLayer
+from bricks import NormLayer
 
 '''
 Get Bread
 '''
-class ConvBNRelu(nn.Module):
+from bricks import ConvBNRelu
 
-    @classmethod
-    def _same_paddings(cls, kernel):
-        if kernel == 1:
-            return 0
-        elif kernel == 3:
-            return 1
-
-    def __init__(self, inChannels, outChannels, kernel=3, stride=1, padding='same',
-                 dilation=1, groups=1):
-        super().__init__()
-
-        if padding == 'same':
-            padding = self._same_paddings(kernel)
-        
-        self.conv = nn.Conv2d(inChannels, outChannels, kernel_size=kernel,
-                              padding=padding, stride=stride, dilation=dilation,
-                              groups=groups, bias=False)
-        self.norm = NormLayer(outChannels, norm_type=config['norm_typ'])
-        self.act = nn.ReLU(inplace=True)
-    
-    def forward(self, x):
-        
-        x = self.conv(x)
-        x = self.norm(x)
-        x = self.act(x)
-
-        return x
 '''
 Get Patty
 ''' 
