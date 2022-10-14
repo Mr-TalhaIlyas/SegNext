@@ -109,22 +109,24 @@ if config['LOG_WANDB']:
 
 #%%
 epoch, best_iou, curr_viou = 0, 0, 0
-ta, tl = [], []
-
+total_avg_viou = []
 for epoch in range(config['epochs']):
 
     pbar = tqdm(train_loader)
     model.train()
-    
+    ta, tl = [], []
     for step, data_batch in enumerate(pbar):
 
         scheduler(optimizer, step, epoch)
         loss_value = trainer.training_step(data_batch)
         iou = trainer.get_scores()
         trainer.reset_metric()
-
+        
+        tl.append(loss_value)
+        ta.append(iou['iou_mean'])
         pbar.set_description(f'Epoch {epoch+1}/{config["epochs"]} - t_loss {loss_value:.4f} - mIOU {iou["iou_mean"]:.4f}')
-    
+    print(f'=> Average loss: {np.nanmean(tl)}, Average IoU: {np.nanmean(ta)}')
+
     if (epoch + 1) % 2 == 0: # eval every 2 epoch
         model.eval()
         va = []
@@ -135,14 +137,16 @@ for epoch in range(config['epochs']):
                 viou = evaluator.get_scores()
                 evaluator.reset_metric()
 
+            va.append(viou['iou_mean'])
             vbar.set_description(f'Validation - v_mIOU {viou["iou_mean"]:.4f}')
 
         img, gt, pred = evaluator.get_sample_prediction()
         tiled = imgviz.tile([img, g2c(gt), g2c(pred)], shape=(1,3), border=(255,0,0))
         # plt.imshow(tiled)
-        va.append(viou['iou_mean'])
-        curr_viou = np.max(np.nan_to_num(va))
-        print(f'=> mean Validation IoU: {curr_viou:.4f}')
+        avg_viou = np.nanmean(va)
+        total_avg_viou.append(avg_viou)
+        curr_viou = np.nanmax(total_avg_viou)
+        print(f'=> Averaged Validation IoU: {avg_viou:.4f}')
 
         if config['LOG_WANDB']:
             wandb.log({"epoch": epoch+1, "val_mIOU": viou["iou_mean"]})

@@ -7,7 +7,7 @@ DPI: 300
 LOG_WANDB: True
 
 project_name: 'torchSegmentation'
-experiment_name: 'droppath_layerscale_aug_focal'
+experiment_name: 'droppath2e-1_layerscale1e-1_aug_focal'
 
 log_directory: "/home/user01/data/talha/cityscape/logs/"
 checkpoint_path: "/home/user01/data/talha/cityscape/chkpts/"
@@ -33,9 +33,9 @@ input_channels: 3
 label_smoothing: 0.0
 batch_size: 8
 WEIGHT_DECAY: 0.00005
-# Regularization
-stochastic_drop_path: 0.5
-layer_scaling_val: 1e-2
+# Regularization SD 0.5 LS 1e-2
+stochastic_drop_path: 2e-1
+layer_scaling_val: 1e-1
 
 # learning rate
 learning_rate: 0.001
