@@ -73,7 +73,7 @@ plt.axis('off')
 model = UHDNext(num_classes=config['num_classes'], in_channnels=3, embed_dims=[32, 64, 460, 256],
                 ffn_ratios=[4, 4, 4, 4], depths=[3, 3, 5, 2], num_stages=4,
                 dec_outChannels=256, ls_init_val=float(config['layer_scaling_val']), 
-                drop_path=config['stochastic_drop_path'], config=config)
+                drop_path=float(config['stochastic_drop_path']), config=config)
                 
 model = model.to('cuda' if torch.cuda.is_available() else 'cpu')
 model= nn.DataParallel(model)
