@@ -25,7 +25,7 @@ class ModelUtils(object):
                     'optimizer_state_dict': optimizer.state_dict()
                     }, os.path.join(self.chkpt_pth, f'{self.exp_name}.pth'))
 
-    def load_chkpt(self, model, optimizer):
+    def load_chkpt(self, model, optimizer=None):
         
         try:
             print('-> Loading checkpoint')
@@ -34,8 +34,9 @@ class ModelUtils(object):
             loss = chkpt['loss']
             iou = chkpt['iou']
             model.load_state_dict(chkpt['model_state_dict'])
-            optimizer.load_state_dict(chkpt['optimizer_state_dict'])
-            print('[INFO] Loaded checkpoint')
+            if optimizer is not None:
+                optimizer.load_state_dict(chkpt['optimizer_state_dict'])
+            print(f'[INFO] Loaded Model checkpoint: epoch={epoch} loss={loss} iou={iou}')
         except FileNotFoundError:
             print('[INFO] No checkpoint found')
 

@@ -2,9 +2,9 @@
 # of crop and weed dataset
 
 #'0,1,2,3'
-gpus_to_use: '0,1'
+gpus_to_use: '0,1,2'
 DPI: 300
-LOG_WANDB: True
+LOG_WANDB: False
 
 project_name: 'torchSegmentation'
 experiment_name: 'droppath2e-1_layerscale1e-1_aug_focal'
