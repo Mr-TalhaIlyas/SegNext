@@ -161,8 +161,35 @@ for epoch in range(config['epochs']):
     
     if curr_viou > best_iou:
         best_iou = curr_viou
-        mu.save_chkpt(model, optimizer, epoch, loss, iou['iou_mean'])
+        mu.save_chkpt(model, optimizer, epoch, loss_value, best_iou)
 
 if config['LOG_WANDB']:
     wandb.run.finish()
 #%%
+model = UHDNext(num_classes=config['num_classes'], in_channnels=3, embed_dims=[32, 64, 460, 256],
+                ffn_ratios=[4, 4, 4, 4], depths=[3, 3, 5, 2], num_stages=4,
+                dec_outChannels=256, ls_init_val=float(config['layer_scaling_val']), 
+                drop_path=float(config['stochastic_drop_path']), config=config)
+                
+model = model.to('cuda' if torch.cuda.is_available() else 'cpu')
+model= nn.DataParallel(model)
+
+mu = ModelUtils(config['num_classes'], config['checkpoint_path'], config['experiment_name'])
+mu.load_chkpt(model)
+
+metric = ConfusionMatrix(config['num_classes'])
+evaluator = Evaluator(model, metric)
+model.eval()
+va = []
+vbar = tqdm(val_loader)
+for step, val_batch in enumerate(vbar):
+    with torch.no_grad():
+        evaluator.eval_step(val_batch)
+        viou = evaluator.get_scores()
+        evaluator.reset_metric()
+
+    va.append(viou['iou_mean'])
+    vbar.set_description(f'Validation - v_mIOU {viou["iou_mean"]:.4f}')
+
+print(f'=> Averaged Validation IoU: {np.nanmean(va):.4f}')
+# %%
