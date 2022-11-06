@@ -11,7 +11,6 @@ import cv2
 import numpy as np
 import os, random, time
 
-from augmenters import data_augmenter
 from data_utils import std_norm, encode_labels
 
 class GEN_DATA_LISTS():
@@ -101,7 +100,8 @@ class Cityscape(data.Dataset):
         lbl = encode_labels(lbl)
 
         if self.augment_data:
-            img,  lbl = data_augmenter(img, lbl)
+            # to implemen
+            pass
             
         if self.normalize:
             img = std_norm(img)
