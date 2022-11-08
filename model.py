@@ -7,7 +7,7 @@ import torch.nn.functional as F
 import torch.nn as nn
 
 from backbone import MSCANet
-from decoder import DecoderHead, HamDecoder
+from decoder import HamDecoder
 
 
 class SegNext(nn.Module):
