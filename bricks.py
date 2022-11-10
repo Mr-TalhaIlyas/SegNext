@@ -110,6 +110,7 @@ class StochasticDepth(nn.Module):
     def __init__(self, p=0.5, mode='row'):
         super().__init__()
         self.p = p
+        self.mode = mode
     
     def forward(self, input):
         return stochastic_depth(input, self.p, self.mode, self.training)
