@@ -6,7 +6,7 @@ We present SegNeXt, a simple convolutional network architecture for semantic seg
 
 [Paper](https://arxiv.org/abs/2209.08575)
 
-## Results (SegNext-Tiny) on Cityscapes Dataset
+## SegNext-Tiny Results on Cityscapes Dataset (From Scratch)
 
 ### mIOU Validation
 
