@@ -10,10 +10,10 @@ We present SegNeXt, a simple convolutional network architecture for semantic seg
 
 ### mIOU Validation
 
-![alt text](https://github.com/Visual-Attention-Network/SegNeXt/blob/main/resources/flops.png)
+![alt text](https://github.com/Mr-TalhaIlyas/SegNext/blob/master/screens/iou.png)
 
 ### Prediction
 
 `img : gt : pred`
 
-![alt text](https://github.com/Visual-Attention-Network/SegNeXt/blob/main/resources/flops.png)
+![alt text](https://github.com/Mr-TalhaIlyas/SegNext/blob/master/screens/media.png)
