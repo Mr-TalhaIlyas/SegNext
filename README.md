@@ -14,6 +14,8 @@ SegNeXt, a simple convolutional network architecture for semantic segmentation. 
 
 ### Prediction
 
+[Checkpoint](https://drive.google.com/file/d/1HgwcXNt2JGtG_n6AGQG2FWw5kgMpN_Yu/view?usp=share_link)
+
 `img : gt : pred`
 
 ![alt text](https://github.com/Mr-TalhaIlyas/SegNext/blob/master/screens/media.png)
