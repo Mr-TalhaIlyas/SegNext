@@ -29,7 +29,7 @@ mpl.rcParams['figure.dpi'] = 300
 
 from dataloader import GEN_DATA_LISTS, Cityscape
 from data_utils import collate, pallet_cityscape
-from model import UHDNext
+from model import SegNext
 from losses import FocalLoss, CrossEntropyLoss2d
 from metrics import ConfusionMatrix
 from lr_scheduler import LR_Scheduler
@@ -70,7 +70,7 @@ plt.title('Sample Batch')
 plt.imshow(imgviz.tile(img_ls, shape=(2,config['batch_size']), border=(255,0,0)))
 plt.axis('off')
 #%%
-model = UHDNext(num_classes=config['num_classes'], in_channnels=3, embed_dims=[32, 64, 460, 256],
+model = SegNext(num_classes=config['num_classes'], in_channnels=3, embed_dims=[32, 64, 460, 256],
                 ffn_ratios=[4, 4, 4, 4], depths=[3, 3, 5, 2], num_stages=4,
                 dec_outChannels=256, ls_init_val=float(config['layer_scaling_val']), 
                 drop_path=float(config['stochastic_drop_path']), config=config)
